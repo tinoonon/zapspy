@@ -1,0 +1,148 @@
+<!DOCTYPE html><!-- Era uma vez um menino chamado Lucas que adorava explorar o quintal de sua casa. Todos os dias, ele imaginava que aquele lugar era uma grande floresta cheia de mistérios. Certo dia, enquanto caminhava entre as plantas, ele encontrou uma pequena caixa escondida debaixo de uma pedra. Curioso, Lucas abriu a caixa e encontrou um desenho antigo que parecia um mapa do tesouro. Mesmo sendo apenas uma brincadeira de sua imaginação, ele decidiu seguir o mapa, atravessando o "rio" (uma mangueira de jardim) e escalando a "montanha" (um monte de areia). No final, ele encontrou um pote cheio de balas que sua mãe havia escondido. Lucas sorriu feliz, pois percebeu que, com imaginação, qualquer dia comum podia se transformar em uma grande aventura. --><html lang="pt-BR" style="--top-offset: 117px;"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Pré-Página</title>
+  <meta name="robots" content="index,follow">
+  <style>
+    :root { --primary-green:#25D366;--light-green:#dcf8c6;--dark-green:#128C7E;--background-color:#f5f5f1;--text-dark:#2c3e50;--text-light:#7f8c8d;--white:#ffffff;--font:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,sans-serif; }
+    *{margin:0;padding:0;box-sizing:border-box;font-family:var(--font);} 
+    body{background:var(--background-color);color:var(--text-dark);line-height:1.45;-webkit-font-smoothing:antialiased;} 
+  /* Loader inicial (primeira visita) */
+  .initial-loader{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--background-color);z-index:1200;gap:18px;transition:opacity .3s ease,visibility .3s ease;}
+  .initial-loader.fade{opacity:0;visibility:hidden;}
+  .initial-loader .spinner{width:54px;height:54px;position:relative;}
+  .initial-loader .spinner:before,.initial-loader .spinner:after{content:"";position:absolute;inset:0;border-radius:50%;border:5px solid rgba(0,0,0,0.08);}
+  .initial-loader .spinner:after{border-color:var(--primary-green) transparent var(--primary-green) transparent;animation:spin .9s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .initial-loader .load-text{font-size:.75rem;font-weight:600;color:var(--text-light);letter-spacing:.5px;text-transform:uppercase;}
+    /* Promo Bar */
+    .promo-bar{background:#25D366;color:#fff;text-align:center;font-weight:700;padding:8px 12px;font-size:14px;letter-spacing:.5px;position:fixed;top:0;left:0;width:100%;z-index:1000;}
+    @media (max-width:480px){.promo-bar{font-size:13px;padding:7px 8px;}}
+    /* Header */
+    .header{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;background-color:var(--background-color);border-bottom:1px solid rgba(0,0,0,0.05);position:fixed;top:0;left:0;width:100%;z-index:999;}
+    .menu-button,.download-button{background:none;border:none;cursor:pointer;padding:8px;display:flex;align-items:center;justify-content:center;}
+    .download-button{background-color:var(--primary-green);border:1px solid #000;border-radius:50%;width:48px;height:48px;transition:.3s;background-image:linear-gradient(rgba(255,255,255,.15),rgba(0,0,0,0));}
+    .download-button:hover{background-color:var(--dark-green);} 
+    .menu-button svg,.download-button svg{width:24px;height:24px;fill:var(--white);} 
+    .menu-button svg{fill:var(--text-dark);} 
+    /* Wrapper principal centrado */
+    .pre-main-wrapper{max-width:880px;margin:0 auto;padding:32px 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:60vh;}
+    .pre-main-wrapper.centered{min-height:calc(100vh - var(--top-offset,160px) - 90px);} /* 90px ~ espaço footer */
+    h1{font-size:clamp(1.55rem,3.6vw,2.15rem);font-weight:800;letter-spacing:-.5px;margin:0 0 18px;color:#000;text-wrap:balance;} 
+    p.desc{font-size:clamp(.95rem,1.3vw,1.05rem);margin:0 0 28px;max-width:640px;color:var(--text-light);line-height:1.35;} 
+    .btn-primary{background:var(--primary-green);color:#fff;border:1px solid #000;border-radius:12px;padding:16px 28px;font-weight:700;font-size:1rem;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:.22s;background-image:linear-gradient(rgba(255,255,255,.14),rgba(0,0,0,0));text-decoration:none;box-shadow:0 8px 20px -6px rgba(0,0,0,.25);} 
+    .btn-primary:hover{background:var(--dark-green);transform:translateY(-2px);} 
+    .btn-primary:active{transform:translateY(0);} 
+    .note{margin-top:18px;font-size:.72rem;opacity:.55;} 
+    footer{margin-top:40px;font-size:.65rem;opacity:.5;text-align:center;padding:24px 10px;} 
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="../config.js"></script>
+  <!-- Pixel / UTMIFY (mantém tracking) -->
+  <script src="js/latest.js" async="" defer=""></script>
+  <script>
+    window.pixelId = "69514dd3dc5f26529481fc65"; // reutilize o mesmo ID
+    (function(){var s=document.createElement('script');s.async=true;s.defer=true;s.src='https://cdn.utmify.com.br/scripts/pixel/pixel.js';document.head.appendChild(s)})();
+  </script><script async="" defer="" src="js/pixel.js"></script>
+</head>
+<body style="padding-top: 117px;">
+  <!-- Barra Promocional -->
+  <div class="promo-bar">APENAS HOJE <span id="promoDate">18/05/2026</span> TESTE GRÁTIS.</div>
+  <!-- Header replicado -->
+  <header class="header" style="top: 36px;">
+    <button class="menu-button" aria-label="Menu">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path></svg>
+    </button>
+    <button class="download-button" aria-label="Download"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"></path></svg></button>
+  </header>
+  <!-- Loader Inicial (primeira visita) -->
+  <div id="initialLoader" class="initial-loader" role="status" aria-live="polite" aria-label="Carregando">
+    <div class="spinner"></div>
+    <p class="load-text">Preparando acesso...</p>
+  </div>
+  <!-- Conteúdo central -->
+  <main id="preMain" class="pre-main-wrapper hidden-content centered" style="opacity: 0; visibility: hidden;">
+    <h1>O SEU ACESSO FOI LIBERADO!</h1>
+    <p class="desc">Toque no botão abaixo para iniciar sem custos.</p>
+  <!-- CTA: navega para o Index 2 local -->
+  <a id="ctaProsseguir" class="btn-primary" href="../verificacao/index.html" data-base-href="../verificacao/index.html" data-keep-params="1">Continuar Agora →</a>
+    <div class="note">100% seguro e confidencial.</div>
+  </main>
+  <footer>© <span id="year">2026</span> Relatório. Todos os direitos reservados.</footer>
+
+  <script>
+    // Preservar UTMs simples e reatribuir ao botão + centralização após medir barras
+    (function(){
+      const KEYS=['utm_source','utm_medium','utm_campaign','utm_content','utm_term','src','sck','fbclid','gclid','utm_id'];
+      function read(){const p=new URLSearchParams(location.search);const o={};KEYS.forEach(k=>{if(p.has(k))o[k]=p.get(k)});return o;}
+      function stored(){try{return JSON.parse(localStorage.getItem('__UTM_STORE__')||'{}')}catch(e){return {}}}
+      const merged={...stored(),...read()};
+      try{localStorage.setItem('__UTM_STORE__',JSON.stringify(merged))}catch(e){}
+      window.__PRESERVED_UTM__=merged;
+      function apply(){
+        const a=document.getElementById('ctaProsseguir');
+        if(!a) return;
+        a.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (window.FunilUtils && window.FUNIL_CONFIG) {
+                FunilUtils.navegarPara(FUNIL_CONFIG.URLS.INDEX_2);
+            } else {
+                window.location.href = a.getAttribute('data-base-href') + window.location.search;
+            }
+        });
+      }
+      // Ajustar promo + header e centralizar
+      function ajustar(){
+        const promo=document.querySelector('.promo-bar');
+        const header=document.querySelector('.header');
+        const main=document.getElementById('preMain');
+        if(promo && header){
+          header.style.top = promo.offsetHeight + 'px';
+          const totalTop = promo.offsetHeight + header.offsetHeight;
+          document.body.style.paddingTop = totalTop + 'px';
+          document.documentElement.style.setProperty('--top-offset', totalTop+'px');
+          if(main){
+            main.classList.add('centered');
+          }
+        }
+      }
+      apply();window.__updatePresellLink=apply; ajustar();
+      window.addEventListener('resize', ajustar);
+    })();
+    // Loader inicial (executa somente na primeira visita / reload não repete)
+    (function(){
+      const KEY='step01SkipIntro';
+      const loader=document.getElementById('initialLoader');
+      const main=document.getElementById('preMain');
+      // Classe para esconder conteúdo até liberar
+      function hideContent(){ if(main){ main.style.opacity='0'; main.style.visibility='hidden'; } }
+      function showContent(){ if(main){ main.style.opacity='1'; main.style.visibility='visible'; main.classList.add('content-ready'); } }
+      hideContent();
+      try{
+        if(sessionStorage.getItem(KEY)==='1'){
+          // Já viu: remove loader imediato
+            if(loader) loader.remove();
+            showContent();
+        }else{
+          // Exibir 1.2s
+          setTimeout(()=>{
+            showContent();
+            if(loader){ loader.classList.add('fade'); setTimeout(()=>loader.remove(),320); }
+            sessionStorage.setItem(KEY,'1');
+          },800);
+        }
+      }catch(e){
+        if(loader) loader.remove(); showContent();
+      }
+    })();
+    // Data e ano
+    (function(){
+      const y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear();
+      const promoDateEl=document.getElementById('promoDate'); if(promoDateEl){ const hoje=new Date(); promoDateEl.textContent=hoje.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'});} 
+    })();
+  </script>
+
+
+</body></html>

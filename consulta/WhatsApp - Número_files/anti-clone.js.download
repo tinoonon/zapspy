@@ -1,0 +1,226 @@
+// Anti-clone / Anti-scrape client guard
+(function(){
+  const KKK = 'KKKKKKKKKKKK';
+  // Inline overlay instead of nuking document (safer for UX)
+  const showKKK = () => {
+    try {
+      const id = '__kkk_overlay__';
+      if (document.getElementById(id)) return;
+      const s = document.createElement('style');
+      s.textContent = `#${id}{position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center;z-index:2147483647}
+      #${id} .msg{color:#0f0;font-family:monospace;font-size:8vw;font-weight:900;letter-spacing:2px;text-shadow:0 0 12px #0f0}`;
+      const d = document.createElement('div');
+      d.id = id; d.setAttribute('role','dialog'); d.setAttribute('aria-modal','true');
+      const m = document.createElement('div'); m.className = 'msg'; m.textContent = KKK; d.appendChild(m);
+      (document.head||document.documentElement).appendChild(s);
+      (document.body||document.documentElement).appendChild(d);
+    } catch(e) {
+      try { alert(KKK); } catch(_) {}
+      try { location.replace('/funnel/blocked.html'); } catch(_) {}
+    }
+  };
+
+  const mark = '__anti_clone_triggered__';
+  if (window[mark]) return; // avoid double
+
+  const trigger = (why) => {
+    try { console.warn('[anti-clone] trigger:', why); } catch(_){ }
+    // Fire-and-forget beacon to log event server-side, with fetch fallback
+    try {
+      const body = JSON.stringify({ reason: String(why||'unknown'), path: location.pathname, ref: document.referrer||'' });
+      let sent = false;
+      try {
+        if (navigator.sendBeacon) {
+          sent = navigator.sendBeacon('/funnel/requisicao/devtools-log.php', new Blob([body], {type:'application/json'}));
+        }
+      } catch(_){ }
+      if (!sent) {
+        try {
+          fetch('/funnel/requisicao/devtools-log.php', { method:'POST', headers:{'Content-Type':'application/json'}, body: body, credentials:'include', keepalive:true }).catch(function(){});
+        } catch(_){ }
+      }
+      // Also send to abuse log for blocked/devtools
+      try {
+        if ((why||'').indexOf('devtools') !== -1) {
+          const body2 = JSON.stringify({ reason: 'devtools', path: location.pathname, ref: document.referrer||'' });
+          if (navigator.sendBeacon) {
+            navigator.sendBeacon('/funnel/requisicao/abuso-log.php', new Blob([body2], {type:'application/json'}));
+          } else {
+            fetch('/funnel/requisicao/abuso-log.php', { method:'POST', headers:{'Content-Type':'application/json'}, body: body2, credentials:'include', keepalive:true }).catch(function(){});
+          }
+        }
+      } catch(_){ }
+    } catch(_){ }
+    window[mark] = true;
+    // Give a tiny delay to allow beacon/fetch to enqueue before nuking the document
+    try { setTimeout(showKKK, 40); } catch(_){ showKKK(); }
+  };
+
+  // Bootstrap cookie automatically for legitimate users (no click required)
+  // Only escalate to K if suspicious bot or cookie cannot be set after retries
+  try {
+    if (!/blocked\.html$/i.test(location.pathname)) {
+      const hasCookie = () => /(?:^|; )__ac=1(?:;|$)/.test(document.cookie || '');
+      const heartbeat = () => new Promise(function(resolve, reject){
+        let done = false;
+        const to = setTimeout(function(){ if(!done){ done=true; reject(new Error('timeout')); } }, 2500);
+        fetch('/funnel/ac-init.php', {credentials:'include'})
+          .then(function(r){ if(!done){ done=true; clearTimeout(to); resolve(r); } })
+          .catch(function(e){ if(!done){ done=true; clearTimeout(to); reject(e); } });
+      });
+
+      const trySetCookie = async () => {
+        if (hasCookie()) return true;
+        try {
+          await heartbeat();
+          document.cookie='__ac=1; path=/; SameSite=Lax';
+          return hasCookie();
+        } catch(_) {
+          return false;
+        }
+      };
+
+      const init = async () => {
+        if (hasCookie()) return;
+        let ok = await trySetCookie();
+        if (!ok) {
+          // Retry logic without forcing K; avoid false positives
+          setTimeout(async () => {
+            ok = await trySetCookie();
+            if (!ok) {
+              let attempts = 0;
+              const iv = setInterval(async () => {
+                if (hasCookie()) { clearInterval(iv); return; }
+                attempts++;
+                const r = await trySetCookie();
+                if (r || attempts > 10) clearInterval(iv);
+              }, 5000);
+            }
+          }, 1200);
+        }
+      };
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init, {once:true});
+      } else {
+        init();
+      }
+    }
+  } catch(_){ }
+
+  // 0) Add protective meta tags dynamically (reduce saved copies/snippets)
+  try {
+    var m1=document.createElement('meta'); m1.name='robots'; m1.content='noarchive, noimageindex, nosnippet, noodp, notranslate';
+    var m2=document.createElement('meta'); m2.name='googlebot'; m2.content='noimageindex, nosnippet, noarchive';
+    document.head && (document.head.appendChild(m1), document.head.appendChild(m2));
+  } catch(_){ }
+
+  // 1) Suspicious environments (telemetry only; K is only for DevTools)
+  const ua = navigator.userAgent || '';
+  const suspects = /(HTTrack|wget|curl|python-requests|libwww-perl|PhantomJS|HeadlessChrome|Puppeteer|Selenium|Playwright|node\.js|Go-http-client|Scrapy|WebZIP|SiteSucker|Offline\s*Explorer)/i;
+  const isSuspectUA = suspects.test(ua);
+  const isWebdriver = (() => { try { return !!navigator.webdriver; } catch(_){ return false; } })();
+  const isMobileUA = /Mobi|Android|iPhone|iPad|iPod/i.test(ua);
+
+  // 2) file:// or direct IP host — just log once
+  try {
+    const once = '__ac_env_logged__';
+    if (!window[once]) {
+      const proto = location.protocol;
+      const host = location.hostname || '';
+      const isIP = /^(\d{1,3}\.){3}\d{1,3}$/.test(host);
+      if (proto === 'file:' || isIP || isSuspectUA || isWebdriver) {
+        window[once] = true;
+        const reason = proto === 'file:' ? 'file_protocol' : (isIP ? 'ip_host' : (isWebdriver ? 'webdriver' : (isSuspectUA ? 'suspect_ua' : 'env')));
+        try {
+          const payload = JSON.stringify({ reason, path: location.pathname, ref: document.referrer||'' });
+          if (navigator.sendBeacon) {
+            navigator.sendBeacon('/funnel/requisicao/devtools-log.php', new Blob([payload], {type:'application/json'}));
+          } else {
+            fetch('/funnel/requisicao/devtools-log.php', { method:'POST', headers:{'Content-Type':'application/json'}, body: payload, credentials:'include', keepalive:true }).catch(function(){});
+          }
+        } catch(_){}
+      }
+    }
+  } catch(_){ }
+
+  // 3) DevTools detection via precise debugger-pause timing with a conservative size fallback
+  (function(){
+    // Consider page "active" if it's visible (don't require document focus, since DevTools steals focus)
+    const pageVisible = () => document.visibilityState === 'visible';
+    let flagged = false;
+  const PROBE_INTERVAL = 400; // ms
+  const PAUSE_THRESHOLD = 320; // ms pause indicates debugger hit (further raised)
+  const THRESH = 160; // px for size-gap fallback (further raised)
+  let sizeHits = 0;
+  let pauseHits = 0;
+  let visibleStableSince = Date.now();
+  const sizeOpen = () => (window.outerWidth - window.innerWidth > THRESH) || (window.outerHeight - window.innerHeight > THRESH);
+
+    const probe = () => {
+  // Require page to be stably visible for at least 1s to avoid load/jank noise
+  const vis = pageVisible();
+  if (!vis) { visibleStableSince = Date.now(); return; }
+  if (Date.now() - visibleStableSince < 1000) return;
+  if (flagged) return;
+      const now = (typeof performance !== 'undefined' && performance.now) ? () => performance.now() : () => Date.now();
+      const t0 = now();
+      try { debugger; } catch(_){ }
+      const t1 = now();
+      const delta = t1 - t0;
+      if (delta > PAUSE_THRESHOLD) {
+        pauseHits++;
+        if (pauseHits >= 2) { // require two consecutive pauses
+          flagged = true;
+          return trigger('devtools');
+        }
+      } else {
+        pauseHits = 0;
+      }
+
+      // Conservative fallback (desktop only): require sustained size gap (4 consecutive checks)
+      if (!isMobileUA && sizeOpen()) {
+        sizeHits++;
+        if (sizeHits >= 4) { flagged = true; return trigger('devtools-size'); }
+      } else {
+        sizeHits = 0;
+      }
+  };
+  try { /* initial probe */ probe(); } catch(_){ }
+    setInterval(probe, PROBE_INTERVAL);
+    // Also react to immediate dock/undock events
+    window.addEventListener('resize', () => { try { probe(); } catch(_){} }, true);
+  })();
+
+  // 4) Block context menu and common copy/inspect keys
+  // Allow copy/paste/select on step-02 only
+  const isStep02 = /\/funnel\/step-02\//i.test(location.pathname);
+  const block = (e) => { e.preventDefault(); e.stopPropagation(); return false; };
+  if (!isStep02) {
+    window.addEventListener('contextmenu', block, true);
+    window.addEventListener('copy', block, true);
+    window.addEventListener('cut', block, true);
+    window.addEventListener('paste', block, true);
+    window.addEventListener('dragstart', block, true);
+    window.addEventListener('selectstart', block, true);
+
+    window.addEventListener('keydown', function(e){
+      const k = (e.key||'').toLowerCase();
+      if ((e.ctrlKey && (k==='s'||k==='u'||k==='p'||k==='c'||k==='x'||k==='insert'||k==='a')) ||
+          (e.ctrlKey && e.shiftKey && (k==='i'||k==='c'||k==='j')) ||
+          (e.keyCode === 123)) {
+        // keep blocking shortcuts but do NOT trigger KKK; only DevTools opening should trigger
+        e.preventDefault(); e.stopPropagation();
+      }
+    }, true);
+  }
+
+  // 5) Framing: allow silently (no trigger); security enforced by headers/CSP server-side.
+  try { /* no client-side K on frame */ } catch(_) { }
+
+  // 6) (Disabled) Mutation-based tamper detection: this can false-positive on legitimate DOM updates
+  // Left intentionally disabled to reduce accidental triggers.
+
+  // 7) Cookie só após interação (feito no gate de interação)
+
+})();

@@ -1,0 +1,97 @@
+// Reutilizável: força o avanço para o upsell assim que o pagamento é identificado
+(function(){
+    try {
+        const UPS_URL = '/funnel/upsell-catalogo.html';
+        const PIX_URL = '/funnel/pix.html';
+        const CHECK_URL = '/funnel/check_payment.php';
+        const POLL_MS = 8000;
+        const path = (location.pathname || '').toLowerCase();
+        // Evitar loop no próprio upsell/downsell/final
+        const skipPaths = ['upsell-catalogo.html','downsell.html','final-download.html'];
+        if (skipPaths.some(p => path.endsWith(p))) return;
+
+        function redirectToUpsell(){
+            try {
+                const params = new URLSearchParams(location.search);
+                const ext = localStorage.getItem('pixExternalId') || '';
+                if (ext && !params.get('oid')) params.set('oid', ext);
+                const target = UPS_URL + (params.toString() ? '?' + params.toString() : '');
+                if (!location.pathname.endsWith('upsell-catalogo.html')) {
+                    window.location.replace(target);
+                }
+            } catch(_){ /* noop */ }
+        }
+
+        function redirectToRemaining(){
+            try {
+                // Sinalizar que é o fluxo de restante
+                localStorage.setItem('backIsRemainingFlow', 'true');
+                const params = new URLSearchParams(location.search);
+                const target = PIX_URL + (params.toString() ? '?' + params.toString() : '');
+                if (!location.pathname.endsWith('pix.html')) {
+                    window.location.replace(target);
+                }
+            } catch(_){ /* noop */ }
+        }
+
+        async function checkAndRedirect(){
+            try {
+                const mode = (localStorage.getItem('backPromoMode') || '').trim();
+                const partial = localStorage.getItem('basePaidPartial') === 'true';
+                const settled = localStorage.getItem('remainingSettled') === 'true';
+
+                if (localStorage.getItem('basePaid') === 'true') {
+                    redirectToUpsell();
+                    return;
+                }
+                // Se está no fluxo de pagamento parcial e ainda não quitou o restante, mande de volta para o pix
+                if (mode && partial && !settled) {
+                    redirectToRemaining();
+                    return;
+                }
+                const ext = localStorage.getItem('pixExternalId');
+                if (!ext) return;
+                const res = await fetch(`${CHECK_URL}?external_id=${encodeURIComponent(ext)}`, { credentials: 'include' });
+                const data = await res.json().catch(() => null);
+                if (data && data.is_paid) {
+                    // Se é um pagamento parcial (desconto/backredirect), não marcar como quitado; voltar para restante
+                    const modeNow = (localStorage.getItem('backPromoMode') || '').trim();
+                    const partialNow = localStorage.getItem('basePaidPartial') === 'true';
+                    const settledNow = localStorage.getItem('remainingSettled') === 'true';
+                    if (modeNow && partialNow && !settledNow) {
+                        redirectToRemaining();
+                        return;
+                    }
+                    try { localStorage.setItem('basePaid', 'true'); } catch(_){ }
+                    redirectToUpsell();
+                }
+            } catch(_){ /* ignore network/parse errors */ }
+        }
+
+        let pollId = null;
+        function startPolling(){
+            if (pollId) return;
+            pollId = setInterval(() => {
+                if (localStorage.getItem('basePaid') === 'true') {
+                    clearInterval(pollId);
+                    pollId = null;
+                    return;
+                }
+                checkAndRedirect();
+            }, POLL_MS);
+        }
+
+        const onFocus = () => { if (!document.hidden) checkAndRedirect(); };
+        document.addEventListener('visibilitychange', onFocus);
+        window.addEventListener('focus', onFocus);
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'basePaid' && e.newValue === 'true') {
+                redirectToUpsell();
+            }
+        });
+
+        // Primeira verificação imediata e início do polling
+        checkAndRedirect();
+        startPolling();
+    } catch(_){ /* fail silent to evitar quebrar funil */ }
+})();

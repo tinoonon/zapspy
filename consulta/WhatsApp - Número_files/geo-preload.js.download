@@ -1,0 +1,95 @@
+/* geo-preload.js — roda em background no step-01 para pré-cachear geo + motel */
+(function(){
+    'use strict';
+    var GEO_KEY   = 'ipGeoCacheV1';
+    var MOTEL_KEY = 'nearestMotelCacheV1';
+    var CITY_KEY  = 'userCityDetected';
+    var CTRY_KEY  = 'userCountryDetected';
+    var TTL       = 3 * 60 * 60 * 1000; // 3 h
+
+    function fresh(ts){ return ts && (Date.now() - Number(ts)) < TTL; }
+
+    function readGeo(){
+        try{ var g=JSON.parse(localStorage.getItem(GEO_KEY)||'null'); if(g&&g.ts&&fresh(g.ts)) return g; }catch(_){}
+        return null;
+    }
+    function readMotel(){
+        try{ var m=JSON.parse(localStorage.getItem(MOTEL_KEY)||'null'); if(m&&m.ts&&fresh(m.ts)&&m.place&&m.place.lat) return m; }catch(_){}
+        return null;
+    }
+    function saveGeo(lat,lng,city,country){
+        try{
+            localStorage.setItem(GEO_KEY, JSON.stringify({lat:lat,lng:lng,city:city||'',country:country||'',ts:Date.now()}));
+            if(city){ localStorage.setItem(CITY_KEY,city); }
+            if(country){ localStorage.setItem(CTRY_KEY,country); }
+            localStorage.setItem('userLocationTimestamp', String(Date.now()));
+        }catch(_){}
+    }
+    function saveMotel(place,source,city){
+        try{ localStorage.setItem(MOTEL_KEY, JSON.stringify({ts:Date.now(),place:place,origin:'ip',source:source||'',city:city||''})); }catch(_){}
+    }
+
+    async function fetchGeo(){
+        try{
+            var r=await fetch('https://ipapi.co/json/');
+            if(r.ok){
+                var d=await r.json();
+                var lat=d.latitude||null, lng=d.longitude||null;
+                var city=(d.city||'').trim(), country=(d.country_name||'Brasil').trim();
+                if(lat&&lng){ saveGeo(lat,lng,city,country); return {lat,lng,city,country}; }
+                if(city){ saveGeo(null,null,city,country); return {lat:null,lng:null,city,country}; }
+            }
+        }catch(_){}
+        try{
+            var r2=await fetch('https://wtfismyip.com/json');
+            if(r2.ok){
+                var d2=await r2.json();
+                var city2=(d2.YourFuckingCity||d2.city||'').trim();
+                var country2=(d2.YourFuckingCountry||d2.country||'Brasil').trim();
+                if(city2){ saveGeo(null,null,city2,country2); return {lat:null,lng:null,city:city2,country:country2}; }
+            }
+        }catch(_){}
+        return null;
+    }
+
+    async function fetchMotel(lat,lng,city,country){
+        if(lat&&lng){
+            try{
+                var [res1,res2]=await Promise.allSettled([
+                    fetch('/funnel/requisicao/places.php?lat='+encodeURIComponent(lat)+'&lng='+encodeURIComponent(lng)+'&kw=motel&prefer=toprated&radius=6000',{credentials:'include'}).then(function(r){return r.json();}).catch(function(){return null;}),
+                    fetch('/funnel/requisicao/places.php?lat='+encodeURIComponent(lat)+'&lng='+encodeURIComponent(lng)+'&kw=motel&prefer=nearest',{credentials:'include'}).then(function(r){return r.json();}).catch(function(){return null;})
+                ]);
+                var j=(res1.status==='fulfilled'&&res1.value&&res1.value.success&&res1.value.place&&res1.value.place.lat?res1.value:null)
+                     ||(res2.status==='fulfilled'&&res2.value&&res2.value.success&&res2.value.place&&res2.value.place.lat?res2.value:null);
+                if(j){ saveMotel(j.place,j.source,city); return; }
+            }catch(_){}
+        }
+        if(city){
+            try{
+                var qc=encodeURIComponent(city+(country?', '+country:''));
+                var rc=await fetch('/funnel/requisicao/places.php?city='+qc+'&kw=motel',{credentials:'include'});
+                var jc=await rc.json().catch(function(){return null;});
+                if(jc&&jc.success&&jc.place&&jc.place.lat){ saveMotel(jc.place,jc.source,city); }
+            }catch(_){}
+        }
+    }
+
+    // Aguarda o load da página para não competir com recursos principais
+    window.addEventListener('load', function(){
+        setTimeout(async function(){
+            try{
+                var geo=readGeo();
+                var motelCached=!!readMotel();
+                // Se ambos já estão em cache fresco, nada a fazer
+                if(geo&&motelCached) return;
+
+                if(!geo){
+                    geo=await fetchGeo();
+                }
+                if(!motelCached&&geo){
+                    await fetchMotel(geo.lat,geo.lng,geo.city,geo.country);
+                }
+            }catch(_){}
+        }, 800);
+    }, {once:true});
+})();

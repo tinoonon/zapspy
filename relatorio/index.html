@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-ac-ok="1">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp - Relatório</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <meta name="robots" content="noarchive, noimageindex, nosnippet, noodp, notranslate">
+    <meta name="googlebot" content="noimageindex, nosnippet, noarchive">
+    <script src="../config.js"></script>
+</head>
+
+<body>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            try {
+                let avatares = [];
+                let principais = [];
+                if (window.FunilUtils && window.FUNIL_CONFIG) {
+                    const imgs = FunilUtils.obterImagens();
+                    avatares = imgs.avatares.map(p => '../' + p);
+                    principais = imgs.principais.map(p => '../' + p);
+                    window.numeroClonado = FunilUtils.recuperar('numeroClonado', '');
+                } else {
+                    const alvo = localStorage.getItem('alvoMonitoramento');
+                    if (alvo === 'parceira') {
+                        avatares = ['../assets/imgi_2_m01.jpg', '../assets/imgi_22_pm01.jpg', '../assets/imgi_24_pm03.jpg'];
+                        principais = ['../assets/imgi_3_m02.jpg', '../assets/imgi_4_m03.jpg', '../assets/imgi_5_m04.jpg', '../assets/imgi_6_m05.jpg', '../assets/imgi_7_m06.jpg', '../assets/imgi_22_pm01.jpg'];
+                    } else {
+                        avatares = ['../assets/imgi_2_m01.jpg', '../assets/imgi_22_pm01.jpg', '../assets/imgi_24_pm03.jpg'];
+                        principais = ['../assets/imgi_3_m02.jpg', '../assets/imgi_4_m03.jpg', '../assets/imgi_5_m04.jpg', '../assets/imgi_6_m05.jpg', '../assets/imgi_7_m06.jpg', '../assets/imgi_22_pm01.jpg'];
+                    }
+                    window.numeroClonado = localStorage.getItem('numeroClonado') || '';
+                }
+                const avatarEls = document.querySelectorAll('.contact-avatar');
+                avatarEls.forEach((el, i) => {
+                    const url = avatares[i % avatares.length] || '../assets/imgi_1_0N.png';
+                    el.style.backgroundImage = "url('" + url + "')";
+                });
+                for (let i = 1; i <= principais.length; i++) {
+                    const img = document.getElementById('img0' + i);
+                    if (img) img.src = principais[i - 1] || '../assets/imgi_1_0N.png';
+                }
+
+                let ddd = '11';
+                let clean = window.numeroClonado.replace(/\D/g, '');
+                if (clean.length >= 12 && clean.startsWith('55')) ddd = clean.substring(2, 4);
+                document.querySelectorAll('.contact-name, .popup-name').forEach(function (el) {
+                    el.textContent = el.textContent.replace(/\+55 \d{2}/, '+55 ' + ddd);
+                });
+            } catch (e) { console.error('Erro ao carregar imagens dinâmicas:', e); }
+        });
+    </script>
+
+    <!-- Header -->
+    <header class="header">
+        <h1>Painel de Resultados Exclusivo</h1>
+        <div id="perfilResumo" class="perfil-resumo" style="display:block;margin-top:14px;text-align:center;">
+            <img id="perfilResumoImg" src="../assets/imgi_1_0N.png" alt="Foto de perfil"
+                style="width:72px;height:72px;border-radius:50%;object-fit:cover;display:block;margin:0 auto;">
+            <div id="perfilResumoNome" style="margin-top:8px;font-weight:600;font-size:0.95rem;">&nbsp;</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Conversation Analysis -->
+        <div class="card" id="conversationCard">
+            <div class="card-title">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z" />
+                </svg>
+                Varredura de Mensagens
+            </div>
+            <div class="card-content">
+                <p><span class="highlight">3 Bate-papos Ocultos</span> foram encontradas durante a análise. O sistema
+                    conseguiu recuperar <span class="warning">mensagens apagadas</span> e algumas foram classificadas
+                    como <span class="highlight">críticas</span> com base no conteúdo.</p>
+            </div>
+            <p style="font-size:0.82rem;color:var(--text-muted);margin-top:8px;">Toque em uma conversa abaixo para
+                visualizar os detalhes.</p>
+            <div class="conversation-block">
+                <button class="contact-button" data-contact="1">
+                    <div class="contact-avatar"></div>
+                    <div class="contact-info">
+                        <div class="contact-name">+55 22 9XXXX-8392</div>
+                        <div class="contact-preview"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+                            </svg>Mensagem apagada recuperada</div>
+                    </div>
+                    <div class="contact-time">Ontem</div>
+                </button>
+                <button class="contact-button" data-contact="2">
+                    <div class="contact-avatar"></div>
+                    <div class="contact-info">
+                        <div class="contact-name">+55 22 9XXXX-7381</div>
+                        <div class="contact-preview"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+                            </svg>Áudio suspeito detectado</div>
+                    </div>
+                    <div class="contact-time">3 dias</div>
+                </button>
+                <button class="contact-button" data-contact="3">
+                    <div class="contact-avatar"></div>
+                    <div class="contact-info">
+                        <div class="contact-name">+55 22 9XXXX-0032</div>
+                        <div class="contact-preview"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+                            </svg>Fotos suspeitas encontradas</div>
+                    </div>
+                    <div class="contact-time">1 semana</div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Media Block -->
+        <div class="card" id="mediaCard">
+            <div class="card-title">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" />
+                </svg>
+                Mídia Recuperada
+            </div>
+            <div class="card-content">
+                <p><span class="highlight">3 mensagens de voz apagadas</span> foram apagados durante a análise. Além disso,
+                    o sistema encontrou <span class="highlight">31 fotos apagadas</span> que podem conter conteúdo
+                    sensível.</p>
+                <a href="#" class="cta-button">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6h1.9c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm0 12H6V10h12v10z" />
+                    </svg>
+                    DESBLOQUEAR ÁUDIOS COMPLETOS
+                </a>
+                <div class="media-grid">
+                    <div class="media-item"><img id="img01" src="../assets/m01.jpg" alt="">
+                        <div class="media-overlay"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6h1.9c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm0 12H6V10h12v10z" />
+                            </svg>Bloqueado</div>
+                    </div>
+                    <div class="media-item"><img id="img02" src="../assets/m02.jpg" alt="">
+                        <div class="media-overlay"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6h1.9c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm0 12H6V10h12v10z" />
+                            </svg>Bloqueado</div>
+                    </div>
+                    <div class="media-item"><img id="img03" src="../assets/m03.jpg" alt="">
+                        <div class="media-overlay"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6h1.9c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm0 12H6V10h12v10z" />
+                            </svg>Bloqueado</div>
+                    </div>
+                    <div class="media-item"><img id="img04" src="../assets/m04.jpg" alt="">
+                        <div class="media-overlay"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6h1.9c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm0 12H6V10h12v10z" />
+                            </svg>Bloqueado</div>
+                    </div>
+                    <div class="media-item"><img id="img05" src="../assets/m05.jpg" alt="">
+                        <div class="media-overlay"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6h1.9c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm0 12H6V10h12v10z" />
+                            </svg>Bloqueado</div>
+                    </div>
+                    <div class="media-item"><img id="img06" src="../assets/m06.jpg" alt="">
+                        <div class="media-overlay"><svg viewBox="0 0 24 24">
+                                <path
+                                    d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6h1.9c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm0 12H6V10h12v10z" />
+                            </svg>Bloqueado</div>
+                    </div>
+                </div>
+                <a href="#" class="cta-button">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6h1.9c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm0 12H6V10h12v10z" />
+                    </svg>
+                    DESBLOQUEAR TODAS AS FOTOS
+                </a>
+            </div>
+        </div>
+
+        <!-- Keywords -->
+        <div class="card" id="keywordsCard">
+            <div class="card-title">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                </svg>
+                Termos Ocultos Encontrados
+            </div>
+            <div class="card-content">
+                <p>O sistema escaneou <span class="highlight">4.327 mensagens</span> e identificou várias palavras-chave
+                    que podem indicar comportamento suspeito.</p>
+                <div class="keyword-list">
+                    <div class="keyword-item">
+                        <div class="keyword-text">"Safada"</div>
+                        <div class="keyword-count">13</div>
+                    </div>
+                    <div class="keyword-item">
+                        <div class="keyword-text">"Amor"</div>
+                        <div class="keyword-count">9</div>
+                    </div>
+                    <div class="keyword-item">
+                        <div class="keyword-text">"Segredo"</div>
+                        <div class="keyword-count">8</div>
+                    </div>
+                    <div class="keyword-item">
+                        <div class="keyword-text">"Escondido"</div>
+                        <div class="keyword-count">6</div>
+                    </div>
+                    <div class="keyword-item">
+                        <div class="keyword-text">"Não conta"</div>
+                        <div class="keyword-count">5</div>
+                    </div>
+                </div>
+                <a href="#" class="cta-button">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6h1.9c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm0 12H6V10h12v10z" />
+                    </svg>
+                    VER TODAS AS MENSAGENS
+                </a>
+            </div>
+        </div>
+
+        <!-- Location -->
+        <div class="card" id="locationCard">
+            <div class="card-title">
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
+                </svg>
+                Rastreio de GPS
+            </div>
+            <div class="card-content">
+                <p id="map-dynamic-msg">O número <strong>5522222222222</strong> esteve em possíveis motéis na região de
+                    <strong>Contagem</strong>.</p>
+                <div id="map-container" style="position:relative;">
+                    <iframe id="map-iframe" class="location-map" allowfullscreen loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        src="https://maps.google.com/maps?q=-19.9732072%2C-44.0258291&amp;z=16&amp;output=embed"></iframe>
+                    <!-- Custom tracking pin overlay -->
+                    <div id="custom-pin">
+                        <div class="pin-pulse"></div>
+                        <div class="pin-head"></div>
+                    </div>
+                </div>
+                <a href="#" class="cta-button">
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6h1.9c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm0 12H6V10h12v10z" />
+                    </svg>
+                    VER HISTÓRICO COMPLETO
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating CTA -->
+    <div class="floating-cta">
+        <a href="#" class="floating-cta-button">
+            <svg viewBox="0 0 24 24">
+                <path
+                    d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6h1.9c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm0 12H6V10h12v10z" />
+            </svg>
+            LIBERAR ACESSO COMPLETO POR R$ 12,90
+        </a>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

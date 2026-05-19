@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desbloquear Relatório - Pagamento via Pix</title>
+    <meta name="description"
+        content="Desbloqueie seu relatório completo com pagamento seguro via Pix. Acesso instantâneo.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Tracking scripts -->
+    <script src="https://cdn.utmify.com.br/scripts/utms/latest.js" async defer></script>
+    <script src="../config.js"></script>
+</head>
+
+<body>
+
+    <!-- Animated background particles -->
+    <div class="bg-particles" id="bgParticles" aria-hidden="true"></div>
+
+    <!-- Promo bar -->
+    <div class="promo-bar" id="promoBar">
+        <div class="promo-bar__inner">
+            <span class="promo-bar__pulse"></span>
+            <span class="promo-bar__text">🔥 OFERTA VÁLIDA POR <strong id="ofertaTimer">10:00</strong></span>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header" id="mainHeader">
+        <div class="header__container">
+            <div class="header__profile">
+                <div class="header__avatar-ring">
+                    <img id="pixProfileImg" src="../assets/imgi_1_0N.png" alt="Foto de perfil" class="header__avatar">
+                    <span class="header__online-dot"></span>
+                </div>
+                <div class="header__info">
+                    <span class="header__name" id="pixProfileName">Perfil WhatsApp</span>
+                    <span class="header__number" id="pixProfileNumber">(22) 2 2222-2222</span>
+                </div>
+            </div>
+            <div class="header__badge">
+                <svg viewBox="0 0 24 24" width="14" height="14">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="currentColor" />
+                </svg>
+                <span>Seguro</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+
+            <!-- Payment Card -->
+            <section class="glass-card payment-section" id="pixFastSection">
+                <div class="payment-section__glow"></div>
+                <div class="section-badge">
+                    <svg viewBox="0 0 24 24" width="16" height="16">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="currentColor" />
+                    </svg>
+                    Pagamento Seguro
+                </div>
+                <h1 class="payment-section__title">Liberação via <span class="text-glow">Pix</span></h1>
+
+                <div class="price-block">
+                    <div class="price-block__top">
+                        <span class="price-block__label-de">DE</span>
+                        <span class="price-block__old">R$ 97,00</span>
+                    </div>
+                    <div class="price-block__current">
+                        <span class="price-block__label-por">POR</span>
+                        <span class="price-block__amount payment-card-amount">R$ 12,90</span>
+                    </div>
+                    <span class="price-block__sub">taxa única de acesso</span>
+                </div>
+
+                <div class="today-offer">
+                    <span class="today-offer__dot"></span>
+                    APENAS HOJE <strong id="heroDay">SEGUNDA-FEIRA</strong>
+                </div>
+
+                <div class="secure-info">
+                    <svg viewBox="0 0 24 24" width="18" height="18">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="currentColor" />
+                    </svg>
+                    <span>Pagamento seguro e confirmado automaticamente</span>
+                </div>
+
+                <input type="hidden" id="cpf" value="390.533.447-05">
+
+                <button id="btnGerarPix" class="btn-neon" type="button">
+                    <span class="btn-neon__bg"></span>
+                    <svg viewBox="0 0 999.9967041 1000" width="22" height="22" fill="currentColor">
+                        <path
+                            d="M220.13,764.99c39.23,0,76.13-15.28,103.88-43.01l149.99-149.99c10.53-10.56,28.88-10.53,39.41,0l150.53,150.53c27.75,27.74,64.64,43.01,103.89,43.01h29.55L607.42,955.51c-59.33,59.32-155.52,59.32-214.85,0L202.07,764.99H220.13z" />
+                        <path
+                            d="M767.82,234.46c-39.23,0-76.13,15.28-103.88,43.01L513.41,428.03c-10.84,10.84-28.55,10.89-39.41-0.01L324.01,278.01c-27.75-27.72-64.64-43.01-103.89-43.01h-18.06L392.57,44.5c59.32-59.33,155.52-59.33,214.84,0l189.96,189.96H767.82z" />
+                        <path
+                            d="M44.49,392.58l113.47-113.47h62.17c27.06,0,53.55,10.97,72.67,30.11l149.99,149.99c14.03,14.03,32.48,21.06,50.91,21.06c18.44,0,36.86-7.02,50.9-21.04L695.15,308.67c19.12-19.13,45.6-30.11,72.67-30.11l73.65-0.01l114.03,114.03c59.33,59.32,59.33,155.52,0,214.84L841.48,721.44h-73.66c-27.07,0-53.55-10.97-72.67-30.11L544.61,540.8c-27.2-27.18-74.64-27.2-101.82,0.01L292.8,690.78c-19.12,19.13-45.61,30.11-72.67,30.11h-62.17L44.49,607.42C-14.83,548.1-14.83,451.9,44.49,392.58z" />
+                    </svg>
+                    <span>LIBERAR ACESSO IMEDIATO</span>
+                </button>
+
+                <div id="errorMsg" class="status-msg status-msg--error"></div>
+                <div id="infoMsg" class="status-msg status-msg--info" style="display: none;"></div>
+            </section>
+
+            <!-- Benefits -->
+            <section class="glass-card benefits-section animate-on-scroll">
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <div class="benefit-card__icon">
+                            <img src="https://i.postimg.cc/Tw3f99Zb/10631880.png" alt="Localização" width="28"
+                                height="28">
+                        </div>
+                        <div class="benefit-card__content">
+                            <strong>Localização em Tempo Real</strong>
+                            <p>Acompanhe movimentos recentes com precisão.</p>
+                        </div>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-card__icon benefit-card__icon--wa">
+                            <svg viewBox="0 0 24 24" width="22" height="22">
+                                <path fill="#25D366"
+                                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                            </svg>
+                        </div>
+                        <div class="benefit-card__content">
+                            <strong>Histórico de Mensagens</strong>
+                            <p>Acesso a todas as mensagens enviadas, excluídas e arquivadas.</p>
+                        </div>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-card__icon">
+                            <img src="https://i.postimg.cc/zGGs4Bdm/1768630.png" alt="Sigiloso" width="28" height="28">
+                        </div>
+                        <div class="benefit-card__content">
+                            <strong>Acesso 100% anônimo</strong>
+                            <p>Ninguém nunca saberá que foi você: zero rastros.</p>
+                        </div>
+                    </div>
+                    <div class="benefit-card">
+                        <div class="benefit-card__icon">
+                            <img src="https://i.postimg.cc/tgMpBPym/10703030.png" alt="Proteção" width="28" height="28">
+                        </div>
+                        <div class="benefit-card__content">
+                            <strong>Proteção contra clonagem</strong>
+                            <p>Segurança para a sua privacidade e suas atividades.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Testimonials -->
+            <section class="glass-card testimonials-section animate-on-scroll" id="depoimentos">
+                <div class="section-header">
+                    <h2 class="section-header__title">Depoimentos</h2>
+                    <p class="section-header__sub">Veja o que quem já usou está dizendo</p>
+                    <div class="section-header__line"></div>
+                </div>
+                <div class="dep-carousel-wrap">
+                    <div class="dep-carousel" id="depCarousel">
+                        <div class="dep-item"><video src="../depoimentos/3.mp4" playsinline muted loop
+                                preload="metadata"></video><span class="dep-play-ico"><svg viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z" />
+                                </svg></span></div>
+                        <div class="dep-item is-photo"><img src="../depoimentos/imgi_5_4.png" alt="Depoimento"
+                                loading="lazy"></div>
+                        <div class="dep-item is-photo"><img src="../depoimentos/imgi_6_5.png" alt="Depoimento"
+                                loading="lazy"></div>
+                        <div class="dep-item"><video src="../depoimentos/4.mp4" playsinline muted loop
+                                preload="metadata"></video><span class="dep-play-ico"><svg viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z" />
+                                </svg></span></div>
+                        <div class="dep-item is-photo"><img src="../depoimentos/imgi_7_6.png" alt="Depoimento"
+                                loading="lazy"></div>
+                        <div class="dep-item is-photo"><img src="../depoimentos/imgi_8_7.png" alt="Depoimento"
+                                loading="lazy"></div>
+                        <div class="dep-item"><video src="../depoimentos/1.mp4" playsinline muted loop
+                                preload="metadata"></video><span class="dep-play-ico"><svg viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z" />
+                                </svg></span></div>
+                        <div class="dep-item is-photo"><img src="../depoimentos/imgi_9_8.png" alt="Depoimento"
+                                loading="lazy"></div>
+                        <div class="dep-item is-photo"><img src="../depoimentos/imgi_10_9.png" alt="Depoimento"
+                                loading="lazy"></div>
+                    </div>
+                </div>
+                <!-- Lightbox -->
+                <div class="dep-lightbox" id="depLightbox">
+                    <div class="dep-lightbox-box" id="depLightboxBox">
+                        <div class="dep-lb-play" id="depLbPlay"><svg viewBox="0 0 24 24">
+                                <path d="M8 5v14l11-7z" />
+                            </svg></div>
+                        <div class="dep-lb-bar" id="depLbBar"><i></i></div>
+                        <button class="dep-lightbox-close" id="depLightboxClose" type="button"
+                            aria-label="Fechar">×</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FAQ -->
+            <section class="glass-card faq-section animate-on-scroll" id="faq">
+                <div class="section-header">
+                    <h2 class="section-header__title">Dúvidas Frequentes</h2>
+                    <div class="section-header__line"></div>
+                </div>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <button class="faq-question" type="button"><span class="text">Como vou receber o
+                                acesso?</span><span class="icon"></span></button>
+                        <div class="faq-answer">
+                            <p>Após o pagamento via PIX, o acesso é liberado automaticamente nesta mesma página. Basta
+                                retornar aqui após a confirmação para visualizar seus dados de acesso.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" type="button"><span class="text">É seguro e confiável?</span><span
+                                class="icon"></span></button>
+                        <div class="faq-answer">
+                            <p>Sim. Você pode ficar totalmente tranquilo(a). Nossa tecnologia utiliza apenas o CPF para
+                                gerar o Pix Copia e Cola, e todos os seus dados são protegidos com protocolos avançados
+                                de segurança, incluindo verificação Google Security.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" type="button"><span class="text">A ferramenta realmente
+                                funciona?</span><span class="icon"></span></button>
+                        <div class="faq-answer">
+                            <p>Sim. É 100% funcional e garantimos total anonimato e segurança no uso.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" type="button"><span class="text">Qualquer pessoa pode adquirir essa
+                                ferramenta?</span><span class="icon"></span></button>
+                        <div class="faq-answer">
+                            <p>Não. O acesso é restrito e liberado somente para perfis avaliados e considerados
+                                confiáveis. Se você está nesta página, significa que foi selecionado e tem a
+                                oportunidade de adquirir.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" type="button"><span class="text">Como funciona o
+                                suporte?</span><span class="icon"></span></button>
+                        <div class="faq-answer">
+                            <p>O suporte é disponibilizado exclusivamente para clientes que já realizaram a compra. Isso
+                                garante qualidade no atendimento e a estabilidade da ferramenta no ar.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" type="button"><span class="text">Tenho dúvidas antes de comprar,
+                                como entro em contato?</span><span class="icon"></span></button>
+                        <div class="faq-answer">
+                            <p>O canal de suporte completo é liberado automaticamente após a confirmação do pagamento.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="guarantee animate-on-scroll" id="garantiaBox">
+                <img id="garantiaImg" src="https://i.postimg.cc/sgKLVKRW/Designsemnome-23.png" alt="Selo de Garantia"
+                    loading="lazy">
+            </div>
+            <div class="footer__links">
+                <a href="../legal/privacidade.html" style="color: inherit; text-decoration: none;">Política de
+                    Privacidade</a>
+                <span class="footer__dot">•</span>
+                <a href="../legal/termos.html" style="color: inherit; text-decoration: none;">Termos de Uso</a>
+                <span class="footer__dot">•</span>
+                <a href="../legal/uso-responsavel.html" style="color: inherit; text-decoration: none;">Central</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Fixed bar (shown after payment) -->
+    <div id="paidFixedBar" class="fixed-bar" style="display: none;">
+        <div class="fixed-bar__content">
+            <span class="fixed-bar__text">✅ Pagamento aprovado — Continuar</span>
+            <button id="fixedBarContinueBtn" class="btn-neon btn-neon--sm" type="button"><span>Continuar</span></button>
+        </div>
+    </div>
+
+    <!-- Popup QR Code PIX -->
+    <div id="pixPopupOverlay" class="popup-overlay" role="dialog" aria-modal="true" aria-labelledby="pixPopupTitle">
+        <div class="popup-modal glass-card">
+            <div class="popup-modal__header">
+                <h3 id="pixPopupTitle">Pague com Pix</h3>
+                <p>Escaneie o QR Code ou copie o código</p>
+            </div>
+            <div class="popup-qr">
+                <div class="popup-qr__box">
+                    <div id="pixPopupQrInner" class="popup-qr__inner">
+                        <div class="qr-loading-wrapper">
+                            <div class="qr-spinner"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="popup-timer">Expira em <span id="pixPopupTimer">15:00</span></div>
+            <div class="popup-actions">
+                <button id="pixPopupCopyBtn" class="btn-neon">
+                    <svg viewBox="0 0 24 24" width="18" height="18" style="margin-right:6px;">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" fill="none" stroke="currentColor"
+                            stroke-width="2" />
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" fill="none"
+                            stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>Copiar Código Pix</span>
+                </button>
+            </div>
+            <div id="pixPopupInfo" class="popup-info" style="display:none;"></div>
+        </div>
+    </div>
+
+    <!-- Back-redirect overlay -->
+    <div id="prePopup" class="prepopup-overlay" aria-hidden="true">
+        <div class="spinner-container">
+            <div class="spinner"></div>
+        </div>
+    </div>
+    <div id="brOverlay" class="br-overlay" role="dialog" aria-modal="true" aria-labelledby="brHead">
+        <div class="br-modal glass-card">
+            <div id="brHead" class="br-head">Ops! Ocorreu um problema com o seu pagamento...</div>
+            <div class="br-sep"></div>
+            <div class="br-text">A oferta que você aceitou acabou de expirar. Para liberar seu acesso ao aplicativo, é
+                necessário pagar o valor restante.</div>
+            <div id="brQrWrapper" class="br-qr-wrapper">
+                <div class="box">
+                    <div id="brQrInner"
+                        style="width:180px;height:180px;display:flex;align-items:center;justify-content:center;"></div>
+                </div>
+            </div>
+            <div class="br-pending-row">
+                <img class="br-lock" src="https://i.postimg.cc/Jn1qSCk9/adad.png" alt="cadeado" loading="lazy">
+                <div class="br-pending">VALOR PENDENTE: <span id="brDue">R$ 00,00</span></div>
+                <img class="br-lock" src="https://i.postimg.cc/Jn1qSCk9/adad.png" alt="cadeado" loading="lazy">
+            </div>
+            <div class="br-actions">
+                <button id="brBtn" class="btn-neon" type="button"><span>GERAR QR CODE E <span class="nowrap">LIBERAR
+                            APLICATIVO</span></span></button>
+                <div id="brInfo" class="br-info"></div>
+                <div class="br-more">MAIS INFORMAÇÕES</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast feed -->
+    <div class="toast-feed" id="toastFeed"></div>
+
+    <script src="app.js"></script>
+    <!-- QR Code library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"
+        integrity="sha384-OIpuk+3N6Ei2sAjQ0P/MjZDGmhhgM9kC4J1kN3W8Op54ZtZgybX9EW1JfVKG6QK6"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
